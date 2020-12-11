@@ -1,0 +1,11 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<ul>
+    {% for entry in listings %}
+        <li><a href="listing/{{ entry.0.id }}">{{ entry.0.title }}</a>
+            Price: ${{ entry.1 }} Description: {{ entry.0.description }}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
