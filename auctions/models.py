@@ -12,6 +12,10 @@ class Listing(models.Model):
     image = models.URLField(null=True, blank=True)
     category = models.CharField(max_length=32, null=True, blank=True)
 
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+
 class create_listing:
     title = None
     description = None

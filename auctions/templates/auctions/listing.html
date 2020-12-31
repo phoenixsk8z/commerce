@@ -6,4 +6,9 @@
 <h1>Title: {{ listing.title }}</h1>
 <h1>Description:  {{ listing.description }}</h1>
 <h1>Starting Bid: ${{ price }}</h1>
+<form action="{% url 'watchlist' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" value="{{ listing.id }}" name="listing_id">
+    <button type="submit">Submit Button</button>
+</form>
 {% endblock %}

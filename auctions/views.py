@@ -5,8 +5,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing
+from .models import User, Listing, Watchlist
 from . import util
+from .forms import WatchlistForm
 
 def index(request):
     return render(request, "auctions/index.html", {
@@ -100,3 +101,17 @@ def listing(request, listing):
         "listing": formated_price,
         "price": "{:.2f}".format(formated_price.starting_bid)
     })
+
+@login_required(redirect_field_name="")
+def watchlist(request):
+    if request.method == "POST": 
+        form = WatchlistForm(request.POST)  
+        if form.is_valid():
+            watchlist_item = Watchlist.objects.create(
+                user = request.user,
+                listing = request.POST["listing_id"]
+            )
+            watchlist_item.save()
+            return HttpResponseRedirect(request, "auctions/listing.html")
+    else:
+        return render(request, "auctions/listing.html")
