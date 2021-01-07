@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import User, Listing, Watchlist
 from . import util
-from .forms import WatchlistForm
+from .forms import WatchListForm
 
 def index(request):
     return render(request, "auctions/index.html", {
@@ -96,22 +96,19 @@ def createlisting(request):
         return render(request, "auctions/createlisting.html")
 
 def listing(request, listing):
-    formated_price = Listing.objects.get(id=listing)
+    listing_id = Listing.objects.get(id=listing)
     return render(request, "auctions/listing.html", {
-        "listing": formated_price,
-        "price": "{:.2f}".format(formated_price.starting_bid)
+        "listing": listing_id,
+        "price": "{:.2f}".format(listing_id.starting_bid)
     })
 
 @login_required(redirect_field_name="")
 def watchlist(request):
-    if request.method == "POST": 
-        form = WatchlistForm(request.POST)  
-        if form.is_valid():
-            watchlist_item = Watchlist.objects.create(
-                user = request.user,
-                listing = request.POST["listing_id"]
-            )
-            watchlist_item.save()
-            return HttpResponseRedirect(request, "auctions/listing.html")
-    else:
-        return render(request, "auctions/listing.html")
+    if request.method == "POST":
+        current_user = request.user
+        watchlist_item = Watchlist.objects.create(
+            user = current_user,
+            listing = Listing.objects.get(pk=request.POST["listing"])
+        )
+        watchlist_item.save()
+        return render(request, "auctions/")

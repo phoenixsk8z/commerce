@@ -8,7 +8,7 @@
 <h1>Starting Bid: ${{ price }}</h1>
 <form action="{% url 'watchlist' %}" method="POST">
     {% csrf_token %}
-    <input type="hidden" value="{{ listing.id }}" name="listing_id">
+    <input type="hidden" value="{{ listing.id }}" name="listing">
     <button type="submit">Submit Button</button>
 </form>
 {% endblock %}
