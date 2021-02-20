@@ -1,2 +1,2 @@
 # commerce
-CS50 Project 2 
+CS50W Project 2 - Commerce
